@@ -10,5 +10,7 @@ namespace Core.Concretes.Entities
 
         public string EmployerId { get; set; } = null!;
         public AppUser Employer { get; set; } = null!;
+
+        public ICollection<JobPosting> JobPostings { get; set; } = [];
     }
 }

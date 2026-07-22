@@ -10,5 +10,6 @@ namespace Core.Concretes.Entities
         public UserType UserRole { get; set; }
 
         public Company? Company { get; set; }
+        public ICollection<JobApplication> Applications { get; set; } = [];
     }
 }
