@@ -37,6 +37,10 @@ namespace Data.Context
                 .WithMany(u => u.Applications)
                 .HasForeignKey(a => a.CandidateId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<JobPosting>()
+                .Navigation(j => j.Company)
+                .AutoInclude();
         }
 
 
