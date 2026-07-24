@@ -42,7 +42,5 @@ namespace Data.Context
                 .Navigation(j => j.Company)
                 .AutoInclude();
         }
-
-
     }
 }

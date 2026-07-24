@@ -8,12 +8,20 @@ namespace Business
     {
         public MapProfiles()
         {
-            // Entity -> DTO
+            // Entity -> List DTO
             CreateMap<JobPosting, JobPostingListDto>()
                 .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Company.Name));
 
-            // DTO -> Entity
+            // Create DTO -> Entity
             CreateMap<JobPostingCreateDto, JobPosting>();
+
+            // Entity -> Detail DTO
+            CreateMap<JobPosting, JobPostingDetailDto>()
+                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Company.Name))
+                .ForMember(dest => dest.ApplicationCount, opt => opt.MapFrom(src => src.Applications != null ? src.Applications.Count() : 0));
+
+            // Update DTO -> Entity
+            CreateMap<JobPostingUpdateDto,JobPosting>();
         }
     }
 }

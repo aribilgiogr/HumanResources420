@@ -2,7 +2,6 @@
 using Core.Concretes.Models;
 using Core.Utils;
 using Data.Context;
-using Microsoft.EntityFrameworkCore;
 using System.Collections;
 
 namespace Data
@@ -11,20 +10,12 @@ namespace Data
     /// Unit of Work pattern'ını uygulayan sınıf.
     /// Veritabanı işlemlerinin merkezi koordinasyon noktası olarak görev yapar.
     /// </summary>
-    public class UnitOfWork : IUnitOfWork
+    /// <remarks>
+    /// UnitOfWork yapıcısı. DbContext'i dependency injection yoluyla alır.
+    /// </remarks>
+    /// <param name="context">Entity Framework veritabanı bağlamı</param>
+    public class UnitOfWork(AppDbContext context) : IUnitOfWork
     {
-        // Veritabanı bağlamı - Entity Framework tarafından sağlanan DbContext örneği
-        private readonly AppDbContext context;
-
-        /// <summary>
-        /// UnitOfWork yapıcısı. DbContext'i dependency injection yoluyla alır.
-        /// </summary>
-        /// <param name="context">Entity Framework veritabanı bağlamı</param>
-        public UnitOfWork(AppDbContext context)
-        {
-            this.context = context;
-        }
-
         /// <summary>
         /// Veritabanıda yapılan tüm değişiklikleri kaydeder.
         /// Başarı veya hata durumunda bir Reply nesnesi döndürür.

@@ -14,13 +14,4 @@ namespace Core.Concretes.DTOs
         public string CompanyName { get; set; } = null!;
         public DateTime ExpirationDate { get; set; }
     }
-
-    public class JobPostingCreateDto
-    {
-        public string Title { get; set; } = null!;
-        public string Description { get; set; } = null!;
-        public string Location { get; set; } = null!;
-        public string CompanyId { get; set; } = null!;
-        public DateTime ExpirationDate { get; set; }
-    }
 }
