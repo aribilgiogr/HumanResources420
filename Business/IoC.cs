@@ -1,7 +1,10 @@
-﻿using Core.Concretes.Entities;
+﻿using Business.Services;
+using Core.Abstracts.IServices;
+using Core.Concretes.Entities;
 using Core.Utils;
 using Data;
 using Data.Context;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +17,9 @@ namespace Business
         {
             services.AddDbContext<AppDbContext>(options => options.UseSqlite(configuration.GetConnectionString("data")));
 
-            services.AddIdentityCore<AppUser>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<AppUser, IdentityRole>()
+                    .AddEntityFrameworkStores<AppDbContext>()
+                    .AddDefaultTokenProviders();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -22,6 +27,8 @@ namespace Business
             {
                 cfg.AddProfile<MapProfiles>();
             });
+
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }
