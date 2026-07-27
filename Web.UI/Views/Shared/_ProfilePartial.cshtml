@@ -1,0 +1,26 @@
+﻿@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+<ul class="navbar nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var user = await UserManager.GetUserAsync(User);
+        <li class="nav-item">
+            <a asp-action="index" asp-controller="account" class="nav-link">Merhaba, @user!.FirstName @user!.LastName!</a>
+        </li>
+        <li class="nav-item">
+            <form asp-action="logout" asp-controller="account" method="post">
+                <button type="submit" class="btn btn-link nav-item text-dark border-0">Çıkış Yap</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link" asp-action="login" asp-controller="account">Giriş Yap</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-action="register" asp-controller="account">Kayıt Ol</a>
+        </li>
+    }
+</ul>

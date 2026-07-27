@@ -1,0 +1,49 @@
+﻿@model RegisterDto
+@{
+    ViewData["Title"] = "Kayıt Formu";
+}
+
+<div class="row">
+    <div class="col-md-4 mx-auto">
+        <div class="card shadow my-5">
+            <div class="card-body">
+                <h4 class="text-center mb-5">Kayıt Formu</h4>
+                <form method="post" class="mb-5">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="UserRole" type="hidden" value="Candidate" />
+                    <div class="form-floating mb-4">
+                        <input asp-for="FirstName" class="form-control" />
+                        <label asp-for="FirstName"></label>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="LastName" class="form-control" />
+                        <label asp-for="LastName"></label>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="Email" class="form-control" />
+                        <label asp-for="Email"></label>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="Password" class="form-control" />
+                        <label asp-for="Password"></label>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <label asp-for="ConfirmPassword"></label>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Kayıt Ol</button>
+                </form>
+                <div class="text-center text-muted small">
+                    Zaten kayıtlı mısınız?
+                    <a asp-action="login" asp-controller="account" class="link-primary fw-bold text-decoration-none">Giriş yapın!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
