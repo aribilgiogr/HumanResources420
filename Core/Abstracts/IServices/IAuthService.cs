@@ -7,6 +7,6 @@ namespace Core.Abstracts.IServices
     {
         Task<Reply> LoginAsync(LoginDto dto);
         Task LogoutAsync();
-        Task<Reply> RegisterAsync(RegisterDto dto);
+        Task<Reply> RegisterAsync(RegisterDto dto, CompanyCreateDto? companyDto = null);
     }
 }

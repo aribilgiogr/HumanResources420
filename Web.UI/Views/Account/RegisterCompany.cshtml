@@ -1,0 +1,62 @@
+﻿@model RegisterCompanyViewModel
+@{
+    ViewData["Title"] = "İşveren Kayıt Formu";
+}
+
+<div class="row">
+    <div class="col-md-4 mx-auto">
+        <div class="card shadow my-5">
+            <div class="card-body">
+                <h4 class="text-center mb-5">İşveren Kayıt Formu</h4>
+                <form method="post" class="mb-5">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="UserInfo.UserRole" type="hidden" value="Employer" />
+                    <div class="form-floating mb-4">
+                        <input asp-for="UserInfo.FirstName" class="form-control" />
+                        <label asp-for="UserInfo.FirstName"></label>
+                        <span asp-validation-for="UserInfo.FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="UserInfo.LastName" class="form-control" />
+                        <label asp-for="UserInfo.LastName"></label>
+                        <span asp-validation-for="UserInfo.LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="CompanyInfo.Name" class="form-control" />
+                        <label asp-for="CompanyInfo.Name"></label>
+                        <span asp-validation-for="CompanyInfo.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="CompanyInfo.Description" class="form-control" />
+                        <label asp-for="CompanyInfo.Description"></label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="CompanyInfo.Website" class="form-control" />
+                        <label asp-for="CompanyInfo.Website"></label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="UserInfo.Email" class="form-control" />
+                        <label asp-for="UserInfo.Email"></label>
+                        <span asp-validation-for="UserInfo.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="UserInfo.Password" class="form-control" />
+                        <label asp-for="UserInfo.Password"></label>
+                        <span asp-validation-for="UserInfo.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input asp-for="UserInfo.ConfirmPassword" class="form-control" />
+                        <label asp-for="UserInfo.ConfirmPassword"></label>
+                        <span asp-validation-for="UserInfo.ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Kayıt Ol</button>
+                </form>
+                <div class="text-center text-muted small">
+                    Zaten kayıtlı mısınız?
+                    <a asp-action="login" asp-controller="account" class="link-primary fw-bold text-decoration-none">Giriş yapın!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

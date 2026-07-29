@@ -2,11 +2,12 @@
 using Core.Concretes.DTOs;
 using Core.Concretes.Entities;
 using Core.Concretes.Models;
+using Core.Utils;
 using Microsoft.AspNetCore.Identity;
 
 namespace Business.Services
 {
-    public class AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : IAuthService
+    public class AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IUnitOfWork unitOfWork) : IAuthService
     {
         public async Task<Reply> LoginAsync(LoginDto dto)
         {
@@ -38,7 +39,7 @@ namespace Business.Services
             await signInManager.SignOutAsync();
         }
 
-        public async Task<Reply> RegisterAsync(RegisterDto dto)
+        public async Task<Reply> RegisterAsync(RegisterDto dto, CompanyCreateDto? companyDto = null)
         {
             var user = new AppUser
             {
@@ -52,6 +53,18 @@ namespace Business.Services
             var result = await userManager.CreateAsync(user, dto.Password);
             if (result.Succeeded)
             {
+                if (companyDto != null)
+                {
+                    var repo = unitOfWork.Repository<Company>();
+                    await repo.CreateAsync(new Company
+                    {
+                        Name = companyDto.Name,
+                        Description = companyDto.Description,
+                        Website = companyDto.Website,
+                        EmployerId = user.Id
+                    });
+                    return await unitOfWork.CommitAsync();
+                }
                 return Reply.Success();
             }
             else

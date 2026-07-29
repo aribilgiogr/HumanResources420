@@ -1,13 +1,13 @@
 ﻿@model RegisterDto
 @{
-    ViewData["Title"] = "Kayıt Formu";
+    ViewData["Title"] = "Aday Kayıt Formu";
 }
 
 <div class="row">
     <div class="col-md-4 mx-auto">
         <div class="card shadow my-5">
             <div class="card-body">
-                <h4 class="text-center mb-5">Kayıt Formu</h4>
+                <h4 class="text-center mb-5">Aday Kayıt Formu</h4>
                 <form method="post" class="mb-5">
                     @Html.AntiForgeryToken()
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>

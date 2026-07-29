@@ -3,6 +3,7 @@ using Core.Concretes.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Web.UI.Models;
 
 namespace Web.UI.Controllers
 {
@@ -51,6 +52,27 @@ namespace Web.UI.Controllers
             if (ModelState.IsValid)
             {
                 var reply = await auth.RegisterAsync(model);
+                if (reply.IsSuccess) return RedirectToAction("login");
+
+                if (reply.Errors != null)
+                {
+                    foreach (var e in reply.Errors!)
+                    {
+                        ModelState.AddModelError(string.Empty, e);
+                    }
+                }
+            }
+            return View(model);
+        }
+
+        public IActionResult RegisterCompany() => View();
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> RegisterCompany(RegisterCompanyViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var reply = await auth.RegisterAsync(model.UserInfo, model.CompanyInfo);
                 if (reply.IsSuccess) return RedirectToAction("login");
 
                 if (reply.Errors != null)

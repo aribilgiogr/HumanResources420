@@ -1,4 +1,5 @@
-﻿@inject SignInManager<AppUser> SignInManager
+﻿@using Core.Concretes.Enums
+@inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 
 <ul class="navbar nav">
@@ -6,7 +7,18 @@
     {
         var user = await UserManager.GetUserAsync(User);
         <li class="nav-item">
-            <a asp-action="index" asp-controller="account" class="nav-link">Merhaba, @user!.FirstName @user!.LastName!</a>
+            @if (user!.UserRole == UserType.Candidate)
+            {
+                <a asp-action="index" asp-controller="account" class="nav-link">
+                    Merhaba, @user!.FirstName @user!.LastName!
+                </a>
+            }
+            else
+            {
+                <a asp-action="index" asp-controller="account" class="nav-link">
+                    Merhaba, @user!.FirstName @user!.LastName (@user.Company!.Name)!
+                </a>
+            }
         </li>
         <li class="nav-item">
             <form asp-action="logout" asp-controller="account" method="post">
@@ -20,7 +32,10 @@
             <a class="nav-link" asp-action="login" asp-controller="account">Giriş Yap</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-action="register" asp-controller="account">Kayıt Ol</a>
+            <a class="nav-link" asp-action="register" asp-controller="account">İş Arıyorum</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-action="registerCompany" asp-controller="account">Eleman Arıyorum</a>
         </li>
     }
 </ul>
