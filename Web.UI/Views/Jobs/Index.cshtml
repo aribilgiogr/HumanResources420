@@ -1,0 +1,42 @@
+@model IEnumerable<JobPostingListDto>
+@{
+    ViewData["Title"] = "İş İlanları";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>İlan Başlığı</th>
+            <th>Konum</th>
+            <th>İşveren</th>
+            <th>Geçerlilik Zamanı</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="detail" asp-controller="jobs" class="link-primary text-decoration-none">
+                            @item.Title
+                        </a>
+                    </td>
+                    <td>@item.Location</td>
+                    <td>
+                        <a asp-action="index" asp-controller="jobs" asp-route-company="@item.CompanyId" class="link-primary text-decoration-none">
+                            @item.CompanyName
+                        </a>
+                    </td>
+                    <td>@item.ExpirationDate.ToLongDateString()</td>
+                    <td>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

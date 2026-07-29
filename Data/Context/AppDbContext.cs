@@ -39,9 +39,9 @@ namespace Data.Context
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<JobPosting>().Navigation(j => j.Company).AutoInclude();
+            builder.Entity<JobPosting>().Navigation(j => j.Applications).AutoInclude();
             builder.Entity<AppUser>().Navigation(j => j.Company).AutoInclude();
             builder.Entity<AppUser>().Navigation(j => j.Applications).AutoInclude();
-
         }
     }
 }

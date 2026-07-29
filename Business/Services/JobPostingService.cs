@@ -24,19 +24,35 @@ namespace Business.Services
             return mapper.Map<IEnumerable<JobPostingListDto>>(jobPostings);
         }
 
-        public Task<JobPostingDetailDto?> GetByIdAsync(string id)
+        public async Task<JobPostingDetailDto?> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var repo = unitOfWork.Repository<JobPosting>();
+            var jobPosting = await repo.ReadOneAsync(id);
+            return mapper.Map<JobPostingDetailDto>(jobPosting);
         }
 
-        public Task<Reply> RemoveAsync(string jobId)
+        public async Task<Reply> RemoveAsync(string jobId)
         {
-            throw new NotImplementedException();
+            var repo = unitOfWork.Repository<JobPosting>();
+            var jobPosting = await repo.ReadOneAsync(jobId);
+            if (jobPosting != null)
+            {
+                repo.Delete(jobPosting);
+                return await unitOfWork.CommitAsync();
+            }
+            return Reply.Fail("Kayıt bulunamadı!");
         }
 
-        public Task<Reply> SetAsync(JobPostingUpdateDto dto)
+        public async Task<Reply> SetAsync(JobPostingUpdateDto dto)
         {
-            throw new NotImplementedException();
+            var repo = unitOfWork.Repository<JobPosting>();
+            if (await repo.AnyAsync(x => x.Id == dto.Id))
+            {
+                var job = mapper.Map<JobPosting>(dto);
+                repo.Update(job);
+                return await unitOfWork.CommitAsync();
+            }
+            return Reply.Fail("Kayıt bulunamadı!");
         }
     }
 }

@@ -21,7 +21,8 @@ namespace Business
                 .ForMember(dest => dest.ApplicationCount, opt => opt.MapFrom(src => src.Applications != null ? src.Applications.Count() : 0));
 
             // Update DTO -> Entity
-            CreateMap<JobPostingUpdateDto,JobPosting>();
+            CreateMap<JobPostingUpdateDto, JobPosting>()
+                .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
         }
     }
 }
