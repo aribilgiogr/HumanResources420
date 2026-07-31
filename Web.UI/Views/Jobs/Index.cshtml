@@ -1,42 +1,77 @@
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
 @model IEnumerable<JobPostingListDto>
 @{
-    ViewData["Title"] = "Ä°ÅŸ Ä°lanlarÄ±";
+
+	ViewData["Title"] = "Yayýndaki Ýlanlar";
+
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container mt-5">
+	<div class="row mb-4">
+		<div class="col-md-8">
+			<h1 class="mb-0">Yayýndaki Ýlanlar</h1>
+		</div>
+		@if (SignInManager.IsSignedIn(User))
+		{
+			var u = await UserManager.GetUserAsync(User);
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Ä°lan BaÅŸlÄ±ÄŸÄ±</th>
-            <th>Konum</th>
-            <th>Ä°ÅŸveren</th>
-            <th>GeÃ§erlilik ZamanÄ±</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null)
-        {
-            foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        <a asp-action="detail" asp-controller="jobs" class="link-primary text-decoration-none">
-                            @item.Title
-                        </a>
-                    </td>
-                    <td>@item.Location</td>
-                    <td>
-                        <a asp-action="index" asp-controller="jobs" asp-route-company="@item.CompanyId" class="link-primary text-decoration-none">
-                            @item.CompanyName
-                        </a>
-                    </td>
-                    <td>@item.ExpirationDate.ToLongDateString()</td>
-                    <td>
-                    </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
+			if (u!.UserRole == Core.Concretes.Enums.UserType.Employer)
+			{
+				<div class="col-md-4 text-end">
+					<a asp-action="create" asp-controller="jobs" class="btn btn-primary">
+						<i class="bi bi-plus-circle"></i> Yeni Ýlan Oluþtur
+					</a>
+				</div>
+			}
+		}
+	</div>
+
+	@if (Model.Any())
+	{
+		<div class="row">
+			@foreach (var job in Model)
+			{
+				<div class="col-md-6 mb-4">
+					<div class="card h-100 shadow-sm hover-shadow">
+						<div class="card-body">
+							<h5 class="card-title text-primary">@job.Title</h5>
+							<p class="card-text text-muted mb-3">
+								<strong>Þirket:</strong> @job.CompanyName
+							</p>
+							<p class="card-text mb-2">
+								<i class="bi bi-geo-alt"></i> <strong>Konum:</strong> @job.Location
+							</p>
+							<p class="card-text mb-3">
+								<i class="bi bi-calendar"></i> <strong>Geçerlilik Tarihi:</strong>
+								@job.ExpirationDate.ToLongDateString()
+							</p>
+						</div>
+						<div class="card-footer bg-transparent">
+							<a href="@Url.Action("Detail", new { id = job.Id })" class="btn btn-sm btn-info">
+								<i class="bi bi-eye"></i> Ýncele
+							</a>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	}
+	else
+	{
+		<div class="alert alert-info" role="alert">
+			<i class="bi bi-info-circle"></i> Güncel ilan bulunamadý!
+		</div>
+	}
+</div>
+
+<style>
+	.hover-shadow {
+		transition: box-shadow 0.3s ease-in-out;
+	}
+
+		.hover-shadow:hover {
+			box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+		}
+</style>

@@ -1,0 +1,74 @@
+@model JobPostingCreateDto
+
+@{
+    ViewData["Title"] = "Create Job Posting";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-briefcase"></i> Create New Job Posting
+                    </h4>
+                </div>
+
+                <div class="card-body">
+                    <form method="post" asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label">Job Title</label>
+                            <input asp-for="Title" class="form-control" placeholder="e.g., Senior Developer" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">Job Description</label>
+                            <textarea asp-for="Description" 
+                                      class="form-control" 
+                                      rows="5" 
+                                      placeholder="Detailed job description, requirements, responsibilities..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Location" class="form-label">Location</label>
+                            <input asp-for="Location" class="form-control" placeholder="e.g., Istanbul, Turkey" />
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="CompanyId" class="form-label">Company</label>
+                            <input asp-for="CompanyId" class="form-control" placeholder="Select or enter company ID" />
+                            <span asp-validation-for="CompanyId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ExpirationDate" class="form-label">Expiration Date</label>
+                            <input asp-for="ExpirationDate" type="datetime-local" class="form-control" />
+                            <span asp-validation-for="ExpirationDate" class="text-danger"></span>
+                            <small class="form-text text-muted">When should this job posting expire?</small>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="@Url.Action("Index")" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Create Posting
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

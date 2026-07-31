@@ -3,39 +3,58 @@
 @inject UserManager<AppUser> UserManager
 
 <ul class="navbar nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        var user = await UserManager.GetUserAsync(User);
-        <li class="nav-item">
-            @if (user!.UserRole == UserType.Candidate)
-            {
-                <a asp-action="index" asp-controller="account" class="nav-link">
-                    Merhaba, @user!.FirstName @user!.LastName!
-                </a>
-            }
-            else
-            {
-                <a asp-action="index" asp-controller="account" class="nav-link">
-                    Merhaba, @user!.FirstName @user!.LastName (@user.Company!.Name)!
-                </a>
-            }
-        </li>
-        <li class="nav-item">
-            <form asp-action="logout" asp-controller="account" method="post">
-                <button type="submit" class="btn btn-link nav-item text-dark border-0">Çıkış Yap</button>
-            </form>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link" asp-action="login" asp-controller="account">Giriş Yap</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" asp-action="register" asp-controller="account">İş Arıyorum</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" asp-action="registerCompany" asp-controller="account">Eleman Arıyorum</a>
-        </li>
-    }
+	@if (SignInManager.IsSignedIn(User))
+	{
+		var user = await UserManager.GetUserAsync(User);
+		<li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+				Profil
+			</a>
+			@if (user!.UserRole == UserType.Candidate)
+			{
+				<ul class="dropdown-menu dropdown-menu-end">
+					<li>
+						<a class="dropdown-item" asp-action="index" asp-controller="account">
+							Merhaba, @user!.FirstName @user!.LastName!
+						</a>
+					</li>
+					<li><a class="dropdown-item" href="#">Another action</a></li>
+					<li><hr class="dropdown-divider"></li>
+					<li><a class="dropdown-item" href="#">Something else here</a></li>
+				</ul>
+			}
+			else
+			{
+				<ul class="dropdown-menu dropdown-menu-end">
+					<li>
+						<a class="dropdown-item" asp-action="index" asp-controller="account">
+							Merhaba, @user!.FirstName @user!.LastName (@user.Company!.Name)!
+						</a>
+					</li>
+					<li>
+						<a class="dropdown-item" asp-action="create" asp-controller="jobs">Yeni İş İlanı</a>
+					</li>
+					<li><hr class="dropdown-divider"></li>
+					<li><a class="dropdown-item" href="#">Something else here</a></li>
+				</ul>
+			}
+		</li>
+		<li class="nav-item">
+			<form asp-action="logout" asp-controller="account" method="post">
+				<button type="submit" class="btn btn-link nav-item text-dark border-0">Çıkış Yap</button>
+			</form>
+		</li>
+	}
+	else
+	{
+		<li class="nav-item">
+			<a class="nav-link" asp-action="login" asp-controller="account">Giriş Yap</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" asp-action="register" asp-controller="account">İş Arıyorum</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" asp-action="registerCompany" asp-controller="account">Eleman Arıyorum</a>
+		</li>
+	}
 </ul>
