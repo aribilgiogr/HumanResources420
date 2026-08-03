@@ -3,3 +3,35 @@
     ViewData["Title"] = "İlan: " + Model.Title;
 }
 
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>@Model.Title</h2>
+            <a asp-action="index" asp-controller="jobs" class="btn btn-outline-secondary btn-sm">Listeye Dön</a>
+        </div>
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">İlan Detayı</h5>
+                    <span class="badge bg-primary fs-6">@Model.CompanyName</span>
+                </div>
+                <p class="text-muted small mb-0">
+                    @Model.CreatedAt.ToLongDateString() ~ @Model.ExpirationDate.ToLongDateString()
+                </p>
+            </div>
+            <div class="card-body p-4">
+                <p class="lead">@Model.Description</p>
+            </div>
+            <div class="card-footer">
+                <div class="row mb-0">
+                    <div class="col">
+                        <span class="lead"><strong>Konum:</strong> @Model.Location</span>
+                    </div>                    
+                    <div class="col-auto">
+                        <button class="btn btn-success btn-sm">Başvur</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
