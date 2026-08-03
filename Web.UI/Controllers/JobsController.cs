@@ -27,7 +27,11 @@ namespace Web.UI.Controllers
         public async Task<IActionResult> Create()
         {
             var user = await userManager.GetUserAsync(User);
-            if (user != null && user.UserRole == UserType.Employer) return View();
+            if (user != null && user.UserRole == UserType.Employer)
+            {
+                ViewBag.CompanyId = user.Company!.Id;
+                return View();
+            }
             return Forbid();
         }
 
