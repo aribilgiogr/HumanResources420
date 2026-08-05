@@ -1,4 +1,8 @@
-﻿@model JobPostingDetailDto
+﻿@using Core.Concretes.Enums
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@model JobPostingDetailDto
 @{
     ViewData["Title"] = "İlan: " + Model.Title;
 }
@@ -26,9 +30,30 @@
                 <div class="row mb-0">
                     <div class="col">
                         <span class="lead"><strong>Konum:</strong> @Model.Location</span>
-                    </div>                    
+                    </div>
                     <div class="col-auto">
-                        <button class="btn btn-success btn-sm">Başvur</button>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            var u = await UserManager.GetUserAsync(User);
+                            if (u!.UserRole == UserType.Employer)
+                            {
+                                <a class="btn btn-primary btn-sm" asp-action="edit" asp-controller="jobs" asp-route-id="@Model.Id">
+                                    Düzenle
+                                </a>
+                            }
+                            else
+                            {
+                                <form asp-action="apply" asp-controller="jobs" asp-route-id="@Model.Id" method="post">
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        Başvur
+                                    </button>
+                                </form>
+                            }
+                        }
+                        else
+                        {
+                            <a class="btn btn-success btn-sm" asp-action="login" asp-controller="account">Giriş Yap</a>
+                        }
                     </div>
                 </div>
             </div>

@@ -58,10 +58,14 @@ namespace Web.UI.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Edit()
+        public async Task<IActionResult> Edit(string id)
         {
             var user = await userManager.GetUserAsync(User);
-            if (user != null && user.UserRole == UserType.Employer) return View();
+            if (user != null && user.UserRole == UserType.Employer)
+            {
+                var job = await jobPostingService.GetForEditByIdAsync(id);
+                return View(job);
+            }
             return Forbid();
         }
 
@@ -73,7 +77,7 @@ namespace Web.UI.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = await jobPostingService.SetAsync(model);
+                var result = await jobPostingService.SetAsync(model, user.Company!.Id);
 
                 if (result.IsSuccess)
                 {

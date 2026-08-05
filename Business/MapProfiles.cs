@@ -23,6 +23,9 @@ namespace Business
             // Update DTO -> Entity
             CreateMap<JobPostingUpdateDto, JobPosting>()
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
+
+            // Entity -> Update DTO
+            CreateMap<JobPosting, JobPostingUpdateDto>();
         }
     }
 }

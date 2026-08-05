@@ -31,6 +31,13 @@ namespace Business.Services
             return mapper.Map<JobPostingDetailDto>(jobPosting);
         }
 
+        public async Task<JobPostingUpdateDto> GetForEditByIdAsync(string id)
+        {
+           var repo = unitOfWork.Repository<JobPosting>();
+            var job = await repo.ReadOneAsync(id);
+            return mapper.Map<JobPostingUpdateDto>(job);
+        }
+
         public async Task<Reply> RemoveAsync(string jobId)
         {
             var repo = unitOfWork.Repository<JobPosting>();
@@ -43,12 +50,13 @@ namespace Business.Services
             return Reply.Fail("Kayıt bulunamadı!");
         }
 
-        public async Task<Reply> SetAsync(JobPostingUpdateDto dto)
+        public async Task<Reply> SetAsync(JobPostingUpdateDto dto, string companyId)
         {
             var repo = unitOfWork.Repository<JobPosting>();
             if (await repo.AnyAsync(x => x.Id == dto.Id))
             {
                 var job = mapper.Map<JobPosting>(dto);
+                job.CompanyId = companyId;
                 repo.Update(job);
                 return await unitOfWork.CommitAsync();
             }
