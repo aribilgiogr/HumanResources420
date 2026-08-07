@@ -9,13 +9,16 @@ using System.Threading.Tasks;
 
 namespace Web.UI.Controllers
 {
+    [Authorize]
     public class JobsController(IJobPostingService jobPostingService, UserManager<AppUser> userManager) : Controller
     {
+        [AllowAnonymous]
         public async Task<IActionResult> Index(string? company = null)
         {
             return View(await jobPostingService.GetAllAsync(company));
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Detail(string id)
         {
             var job = await jobPostingService.GetByIdAsync(id);
@@ -23,7 +26,6 @@ namespace Web.UI.Controllers
             return View(job);
         }
 
-        [Authorize]
         public async Task<IActionResult> Create()
         {
             var user = await userManager.GetUserAsync(User);
@@ -35,7 +37,7 @@ namespace Web.UI.Controllers
             return Forbid();
         }
 
-        [HttpPost, Authorize, ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(JobPostingCreateDto model)
         {
             var user = await userManager.GetUserAsync(User);
@@ -57,7 +59,6 @@ namespace Web.UI.Controllers
             return View(model);
         }
 
-        [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
             var user = await userManager.GetUserAsync(User);
@@ -69,7 +70,7 @@ namespace Web.UI.Controllers
             return Forbid();
         }
 
-        [HttpPost, Authorize, ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(JobPostingUpdateDto model)
         {
             var user = await userManager.GetUserAsync(User);
@@ -89,6 +90,23 @@ namespace Web.UI.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user = await userManager.GetUserAsync(User);
+            if (user == null || user.UserRole == UserType.Candidate) return Forbid();
+            var result = await jobPostingService.RemoveAsync(id);
+            if (result.IsSuccess)
+            {
+                return RedirectToAction("index");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = result.Errors;
+                return RedirectToAction("detail", new { id });
+            }
         }
     }
 }

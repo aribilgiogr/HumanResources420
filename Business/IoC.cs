@@ -30,6 +30,7 @@ namespace Business
 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IJobPostingService, JobPostingService>();
+            services.AddScoped<IJobApplicationService, JobApplicationService>();
 
             return services;
         }
